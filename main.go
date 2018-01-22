@@ -32,6 +32,14 @@ func main() {
   log.Println("------")
   log.Println("Starting dynamic backend")
 
+  // root must end with bar
+  lastRootChar := root[len(root) - 1:]
+  if lastRootChar != "/" {
+    root := root + "/"
+  }
+  log.Println("Server root")
+  log.Println(root)
+
   // init Redis client
   // https://github.com/go-redis/redis
   client := redis.NewClient(&redis.Options{
@@ -50,9 +58,6 @@ func main() {
     log.Println(pong)
   }
 
-  fs := http.FileServer(http.Dir(root))
-  http.Handle("/static/", http.StripPrefix("/static/", fs))
-
   http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
     // get channel ID from Redis
     val, err := client.Get(r.Host).Result()
@@ -68,10 +73,7 @@ func main() {
     }
   })
 
-  http.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Hello, %q\n", r.Host)
-  })
-
   log.Println("Listening...")
+  log.Println(port)
   log.Fatal(http.ListenAndServe(port, nil))
 }
