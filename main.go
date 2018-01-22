@@ -54,7 +54,7 @@ func main() {
   http.Handle("/static/", fs)
 
   http.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Hello, %q", r.Header.Get("Host"))
+    fmt.Fprintf(w, "Hello, %q", r.Host)
   })
 
   log.Println("Listening...")
