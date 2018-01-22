@@ -4,7 +4,6 @@ import (
   "log"
   "net/http"
   "os"
-  "fmt"
 )
 
 func main() {
@@ -19,6 +18,6 @@ func main() {
   fs := http.FileServer(http.Dir(root))
   http.Handle("/", fs)
 
-  http.ListenAndServe(port, nil)
   log.Println("Listening...")
+  http.ListenAndServe(port, nil)
 }
