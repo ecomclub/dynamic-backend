@@ -48,7 +48,7 @@ func main() {
     Password: "",
     // use default DB
     DB: 0,
-	})
+  })
 
 	pong, err := client.Ping().Result()
   if err != nil {
