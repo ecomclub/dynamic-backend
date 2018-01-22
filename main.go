@@ -45,9 +45,9 @@ func main() {
   client := redis.NewClient(&redis.Options{
     Addr: "127.0.0.1:6379",
     // no password set
-		Password: "",
+    Password: "",
     // use default DB
-		DB: 0,
+    DB: 0,
 	})
 
 	pong, err := client.Ping().Result()
