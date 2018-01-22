@@ -16,6 +16,17 @@ func main() {
   // eg.: ':3000'
   port := os.Args[2]
 
+  if len(os.Args) >= 4 {
+    file := os.Args[3]
+    // log to file
+    f, err := os.OpenFile("/var/log/go/dynamic-backend.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0644)
+    if err != nil {
+      t.Fatalf("error opening file: %v", err)
+    }
+    defer f.Close()
+    log.SetOutput(f)
+  }
+
   // init Redis client
   // https://github.com/go-redis/redis
   client := redis.NewClient(&redis.Options{
