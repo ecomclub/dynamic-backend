@@ -56,12 +56,11 @@ func main() {
   http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
     // get channel ID from Redis
     val, err := client.Get(r.Host).Result()
-    if err != nil {
-      log.Fatalf("Failed to GET key from Redis: %v", err)
-      w.WriteHeader(http.StatusInternalServerError)
-      w.Write([]byte("Server error!"))
-    } else {
+    if err == nil {
       fmt.Fprintf(w, "Key value: %q\n", val)
+    } else {
+      w.WriteHeader(http.StatusNotFound)
+      w.Write([]byte("Not Found!"))
     }
   })
 
