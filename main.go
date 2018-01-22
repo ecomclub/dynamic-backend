@@ -35,7 +35,7 @@ func main() {
   // root must end with bar
   lastRootChar := root[len(root) - 1:]
   if lastRootChar != "/" {
-    dir := root + "/"
+    root += "/"
   }
   log.Println("Server root")
   log.Println(root)
@@ -63,7 +63,7 @@ func main() {
     val, err := client.Get(r.Host).Result()
     if err == nil {
       // fmt.Fprintf(w, "Key value: %q\n", val)
-      file := fmt.Sprintf("%s%s%s", dir, val, r.URL.Path)
+      file := fmt.Sprintf("%s%s%s", root, val, r.URL.Path)
       log.Println("GET file")
       log.Println(file)
       http.ServeFile(w, r, file)
