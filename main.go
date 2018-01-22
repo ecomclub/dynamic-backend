@@ -12,13 +12,12 @@ func main() {
   // https://gobyexample.com/command-line-arguments
   root := os.Args[1]
   // TCP port
+  // eg.: ':3000'
   port := os.Args[2]
-  // listen localhost only
-  bind := fmt.Sprintf("%s%s", "127.0.0.1:", port)
 
   fs := http.FileServer(http.Dir(root))
   http.Handle("/", fs)
 
-  http.ListenAndServe(bind, nil)
+  http.ListenAndServe(port, nil)
   log.Println("Listening...")
 }
