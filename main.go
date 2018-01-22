@@ -57,10 +57,14 @@ func main() {
     // get channel ID from Redis
     val, err := client.Get(r.Host).Result()
     if err == nil {
-      fmt.Fprintf(w, "Key value: %q\n", val)
+      // fmt.Fprintf(w, "Key value: %q\n", val)
+      file := fmt.Sprintf("%s%s%s", root, val, r.URL.Path)
+      log.Println("GET file")
+      log.Println(file)
+      http.ServeFile(w, r, file)
     } else {
       w.WriteHeader(http.StatusNotFound)
-      w.Write([]byte("Not Found!"))
+      w.Write([]byte("Not Found!\n"))
     }
   })
 
