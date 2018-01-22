@@ -19,6 +19,6 @@ func main() {
   fs := http.FileServer(http.Dir(root))
   http.Handle("/", fs)
 
-  log.Println("Listening...")
   http.ListenAndServe(bind, nil)
+  log.Println("Listening...")
 }
