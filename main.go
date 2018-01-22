@@ -27,8 +27,8 @@ func main() {
 	})
 
 	pong, err := client.Ping().Result()
-  if err == nil {
-    log.Println(pong)
+  if err != nil {
+    log.Println(err)
   }
 
   fs := http.FileServer(http.Dir(root))
