@@ -51,7 +51,7 @@ func main() {
   }
 
   fs := http.FileServer(http.Dir(root))
-  http.Handle("/static/", fs)
+  http.Handle("/static/", http.StripPrefix("/static/", fs))
 
   http.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "Hello, %q", r.Host)
