@@ -30,6 +30,7 @@ func main() {
   if err != nil {
     log.Println(err)
   } else {
+    log.Println("Redis ping")
     log.Println(pong)
   }
 
