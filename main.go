@@ -64,8 +64,8 @@ func main() {
     if err == nil {
       // fmt.Fprintf(w, "Key value: %q\n", val)
       file := fmt.Sprintf("%s%s%s", root, val, r.URL.Path)
-      log.Println("GET file")
-      log.Println(file)
+      // log.Println("GET file")
+      // log.Println(file)
       http.ServeFile(w, r, file)
     } else {
       w.WriteHeader(http.StatusNotFound)
