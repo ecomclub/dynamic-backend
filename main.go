@@ -14,7 +14,7 @@ func main() {
   // TCP port
   port := os.Args[2]
   // listen localhost only
-  bind := fmt.Sprintf("%s%s", "127.0.0.1", port)
+  bind := fmt.Sprintf("%s%s", "127.0.0.1:", port)
 
   fs := http.FileServer(http.Dir(root))
   http.Handle("/", fs)
