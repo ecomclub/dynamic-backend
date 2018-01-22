@@ -21,7 +21,7 @@ func main() {
     // log to file
     f, err := os.OpenFile("/var/log/go/dynamic-backend.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0644)
     if err != nil {
-      t.Fatalf("error opening file: %v", err)
+      log.Fatalf("Error opening file: %v", err)
     }
     defer f.Close()
     log.SetOutput(f)
