@@ -4,6 +4,7 @@ import (
   "log"
   "net/http"
   "os"
+  "bytes"
   "fmt"
   "github.com/go-redis/redis"
 )
@@ -52,6 +53,18 @@ func main() {
 
   fs := http.FileServer(http.Dir(root))
   http.Handle("/static/", http.StripPrefix("/static/", fs))
+
+  http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    // get channel ID from Redis
+    val, err := client.Get(r.Host).Result()
+    if err != nil {
+      log.Fatalf("Failed to GET key from Redis: %v", err)
+      w.WriteHeader(http.StatusInternalServerError)
+      w.Write([]byte("Server error!"))
+    } else {
+      fmt.Fprintf(w, "Key value: %q\n", val)
+    }
+  })
 
   http.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "Hello, %q\n", r.Host)
