@@ -19,13 +19,16 @@ func main() {
   if len(os.Args) >= 4 {
     file := os.Args[3]
     // log to file
-    f, err := os.OpenFile(file, os.O_RDWR | os.O_CREATE, 0644)
+    f, err := os.OpenFile(file, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0644)
     if err != nil {
       log.Fatalf("Error opening file: %v", err)
     }
     defer f.Close()
     log.SetOutput(f)
   }
+
+  log.Println("------")
+  log.Println("Starting dynamic backend")
 
   // init Redis client
   // https://github.com/go-redis/redis
