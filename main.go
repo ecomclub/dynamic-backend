@@ -50,7 +50,7 @@ func main() {
     DB: 0,
   })
 
-	pong, err := client.Ping().Result()
+  pong, err := client.Ping().Result()
   if err != nil {
     log.Println(err)
   } else {
