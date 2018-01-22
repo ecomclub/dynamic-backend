@@ -4,6 +4,7 @@ import (
   "log"
   "net/http"
   "os"
+  "fmt"
   "github.com/go-redis/redis"
 )
 
@@ -17,6 +18,7 @@ func main() {
   port := os.Args[2]
 
   if len(os.Args) >= 4 {
+    // ./main /var/data :3000 /var/log/go.log
     file := os.Args[3]
     // log to file
     f, err := os.OpenFile(file, os.O_RDWR | os.O_CREATE | os.O_APPEND, 0644)
@@ -49,8 +51,12 @@ func main() {
   }
 
   fs := http.FileServer(http.Dir(root))
-  http.Handle("/", fs)
+  http.Handle("/static/", fs)
+
+  http.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Hello, %q", r.Header.Get("Host"))
+  })
 
   log.Println("Listening...")
-  http.ListenAndServe(port, nil)
+  log.Fatal(http.ListenAndServe(port, nil))
 }
