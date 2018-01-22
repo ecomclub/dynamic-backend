@@ -8,8 +8,9 @@ import (
 )
 
 func main() {
-  // get root directory from first command line argument
+  // get root directory and port from command line arguments
   // https://gobyexample.com/command-line-arguments
+  // ./main /var/data :3000
   root := os.Args[1]
   // TCP port
   // eg.: ':3000'
