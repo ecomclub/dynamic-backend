@@ -4,6 +4,7 @@ import (
   "log"
   "net/http"
   "os"
+  "github.com/go-redis/redis"
 )
 
 func main() {
@@ -14,6 +15,21 @@ func main() {
   // TCP port
   // eg.: ':3000'
   port := os.Args[2]
+
+  // init Redis client
+  // https://github.com/go-redis/redis
+  client := redis.NewClient(&redis.Options{
+    Addr: "127.0.0.1:6379",
+    // no password set
+		Password: "",
+    // use default DB
+		DB: 0,
+	})
+
+	pong, err := client.Ping().Result()
+  if err == nil {
+    log.Println(pong)
+  }
 
   fs := http.FileServer(http.Dir(root))
   http.Handle("/", fs)
