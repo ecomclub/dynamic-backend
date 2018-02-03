@@ -82,10 +82,11 @@ func main() {
         id := s[1]
 
         // write cookies to use same info client side
-        http.SetCookie(w, &http.Cookie{Name: "storeId", Value: storeId, MaxAge: 60})
-        http.SetCookie(w, &http.Cookie{Name: "storeObjectId", Value: storeObjectId, MaxAge: 60})
-        http.SetCookie(w, &http.Cookie{Name: r.URL.Path + ":resource", Value: resource, MaxAge: 60})
-        http.SetCookie(w, &http.Cookie{Name: r.URL.Path + ":_id", Value: id, MaxAge: 60})
+        http.SetCookie(w, &http.Cookie{Name: "Ecom.store_id", Value: storeId, MaxAge: 60})
+        http.SetCookie(w, &http.Cookie{Name: "Ecom.store_object_id", Value: storeObjectId, MaxAge: 60})
+        http.SetCookie(w, &http.Cookie{Name: "Ecom.channel_id", Value: channelId, MaxAge: 60})
+        http.SetCookie(w, &http.Cookie{Name: "Ecom." + r.URL.Path + ":resource", Value: resource, MaxAge: 30})
+        http.SetCookie(w, &http.Cookie{Name: "Ecom." + r.URL.Path + ":_id", Value: id, MaxAge: 30})
 
         file := root + channelId + "/dist/_" + resource + ".html"
         http.ServeFile(w, r, file)
