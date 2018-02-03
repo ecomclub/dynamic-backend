@@ -4,7 +4,6 @@ import (
   "log"
   "net/http"
   "os"
-  "fmt"
   "strings"
   "github.com/go-redis/redis"
 )
