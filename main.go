@@ -5,6 +5,7 @@ import (
   "net/http"
   "os"
   "fmt"
+  "strings"
   "github.com/go-redis/redis"
 )
 
@@ -59,18 +60,35 @@ func main() {
   }
 
   http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-    // get channel ID from Redis
+    // get store ID from Redis
     val, err := client.Get(r.Host).Result()
     if err == nil {
       // fmt.Fprintf(w, "Key value: %q\n", val)
-      file := fmt.Sprintf("%s%s%s", root, val, r.URL.Path)
-      // log.Println("GET file")
-      // log.Println(file)
-      http.ServeFile(w, r, file)
-    } else {
-      w.WriteHeader(http.StatusNotFound)
-      w.Write([]byte("Not Found!\n"))
+      // [storeId]+[storeObjectId]+[channelId]
+      s := strings.Split(val, "+")
+      storeId := s[0]
+      storeObjectId := s[1]
+      channelId := s[2]
+
+      slug := strings.TrimPrefix(r.URL.Path, "/")
+      key := storeId + "+" + strings.Replace(slug, "/", "+", -1)
+
+      val, err = client.Get(key).Result()
+      if err == nil {
+        // slug found
+        // [resource]+[id]
+        s = strings.Split(val, "+")
+        resource := s[0]
+        id := s[1]
+
+        file := root + channelId + "/dist/_" + resource + ".html"
+        http.ServeFile(w, r, file)
+        return
+      }
     }
+
+    w.WriteHeader(http.StatusNotFound)
+    w.Write([]byte("Not Found!\n"))
   })
 
   log.Println("Listening...")
