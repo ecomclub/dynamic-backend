@@ -70,7 +70,7 @@ func main() {
       channelId := s[2]
 
       slug := strings.TrimPrefix(r.URL.Path, "/")
-      key := storeId + "+" + strings.Replace(slug, "/", "+", -1)
+      key := storeId + "+" + slug
 
       val, err = client.Get(key).Result()
       if err == nil {
