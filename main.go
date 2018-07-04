@@ -63,20 +63,21 @@ func main() {
     val, err := client.Get(r.Host).Result()
     if err == nil {
       // fmt.Fprintf(w, "Key value: %q\n", val)
-      // [storeId]+[storeObjectId]+[channelId]
-      s := strings.Split(val, "+")
+      // [storeId]@[storeObjectId]@[channelId]
+      s := strings.Split(val, "@")
       storeId := s[0]
       storeObjectId := s[1]
       channelId := s[2]
 
       slug := strings.TrimPrefix(r.URL.Path, "/")
-      key := storeId + "+" + slug
+      // replace / with $ on slug
+      key := storeId + "@" + strings.Replace(slug, "/", "$", -1)
 
       val, err = client.Get(key).Result()
       if err == nil {
         // slug found
-        // [resource]+[id]
-        s = strings.Split(val, "+")
+        // [resource]@[id]
+        s = strings.Split(val, "@")
         resource := s[0]
         id := s[1]
 
