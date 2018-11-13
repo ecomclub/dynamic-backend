@@ -63,11 +63,15 @@ func main() {
     val, err := client.Get(r.Host).Result()
     if err == nil {
       // fmt.Fprintf(w, "Key value: %q\n", val)
-      // [storeId]@[storeObjectId]@[channelId]
+      // {storeId}@{storeObjectId}@{channelId}[@{defaultLang}]
       s := strings.Split(val, "@")
       storeId := s[0]
       storeObjectId := s[1]
       channelId := s[2]
+      var defaultLang string
+      if len(s) > 3 {
+        defaultLang = s[3]
+      }
 
       slug := strings.TrimPrefix(r.URL.Path, "/")
       // replace / with $ on slug
@@ -85,6 +89,9 @@ func main() {
         http.SetCookie(w, &http.Cookie{Name: "Ecom.store_id", Value: storeId, MaxAge: 60})
         http.SetCookie(w, &http.Cookie{Name: "Ecom.store_object_id", Value: storeObjectId, MaxAge: 60})
         http.SetCookie(w, &http.Cookie{Name: "Ecom.channel_id", Value: channelId, MaxAge: 60})
+        if defaultLang != "" {
+          http.SetCookie(w, &http.Cookie{Name: "Ecom.default_lang", Value: defaultLang, MaxAge: 60})
+        }
         http.SetCookie(w, &http.Cookie{Name: "Ecom." + r.URL.Path + ":resource", Value: resource, MaxAge: 30})
         http.SetCookie(w, &http.Cookie{Name: "Ecom." + r.URL.Path + ":_id", Value: id, MaxAge: 30})
 
