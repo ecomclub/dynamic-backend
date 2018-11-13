@@ -88,7 +88,12 @@ func main() {
         http.SetCookie(w, &http.Cookie{Name: "Ecom." + r.URL.Path + ":resource", Value: resource, MaxAge: 30})
         http.SetCookie(w, &http.Cookie{Name: "Ecom." + r.URL.Path + ":_id", Value: id, MaxAge: 30})
 
-        file := root + channelId + "/dist/_" + resource + ".html"
+        file := root + channelId + "/.dist/_" + resource + ".html"
+        if _, err := os.Stat(file); os.IsNotExist(err) {
+          // dist file does not exists
+          // try on channel's root directory
+          file := root + channelId + "/_" + resource + ".html
+        }
         http.ServeFile(w, r, file)
         return
       }
