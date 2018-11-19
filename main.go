@@ -62,51 +62,7 @@ func main() {
     // get store ID from Redis
     val, err := client.Get(r.Host).Result()
     if err == nil {
-      // {storeId}@{storeObjectId}@{channelId}[@{defaultLang}]
-      s := strings.Split(val, "@")
-      storeId := s[0]
-      storeObjectId := s[1]
-      channelId := s[2]
-      var defaultLang string
-      if len(s) > 3 {
-        defaultLang = s[3]
-      }
-
-      slug := strings.TrimPrefix(r.URL.Path, "/")
-      // replace / with $ on slug
-      key := storeId + "@" + strings.Replace(slug, "/", "$", -1)
-
-      val, err = client.Get(key).Result()
-      if err == nil {
-        // slug found
-        // [resource]@[id]
-        s = strings.Split(val, "@")
-        resource := s[0]
-        id := s[1]
-
-        // write cookies to use same info client side
-        http.SetCookie(w, &http.Cookie{Name: "Ecom.store_id", Value: storeId, MaxAge: 60})
-        http.SetCookie(w, &http.Cookie{Name: "Ecom.store_object_id", Value: storeObjectId, MaxAge: 60})
-        http.SetCookie(w, &http.Cookie{Name: "Ecom.channel_id", Value: channelId, MaxAge: 60})
-        if defaultLang != "" {
-          http.SetCookie(w, &http.Cookie{Name: "Ecom.default_lang", Value: defaultLang, MaxAge: 60})
-        }
-        http.SetCookie(w, &http.Cookie{Name: "Ecom." + r.URL.Path + ":resource", Value: resource, MaxAge: 30})
-        http.SetCookie(w, &http.Cookie{Name: "Ecom." + r.URL.Path + ":_id", Value: id, MaxAge: 30})
-
-        // files from channel directory
-        dir := root + channelId
-        // try compinled on dist folder
-        file := dir + "/.dist/_" + resource + ".html"
-        if _, err := os.Stat(file); os.IsNotExist(err) {
-          // dist file does not exists
-          // try on channel's root directory
-          file = dir + "/_" + resource + ".html
-        }
-
-        http.ServeFile(w, r, file)
-        return
-      }
+      log.Println(val)
     }
 
     w.WriteHeader(http.StatusNotFound)
