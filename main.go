@@ -92,8 +92,9 @@ func main() {
         if defaultLang != "" {
           http.SetCookie(w, &http.Cookie{Name: "Ecom.default_lang", Value: defaultLang, MaxAge: 60})
         }
-        http.SetCookie(w, &http.Cookie{Name: "Ecom." + r.URL.Path + ".resource", Value: resource, MaxAge: 30})
-        http.SetCookie(w, &http.Cookie{Name: "Ecom." + r.URL.Path + "._id", Value: id, MaxAge: 30})
+        http.SetCookie(w, &http.Cookie{Name: "Ecom.current.resource", Value: resource, MaxAge: 30})
+        http.SetCookie(w, &http.Cookie{Name: "Ecom.current._id", Value: id, MaxAge: 30})
+        http.SetCookie(w, &http.Cookie{Name: "Ecom.current.path", Value: r.URL.Path, MaxAge: 30})
 
         // files from channel directory
         dir := root + channelId
