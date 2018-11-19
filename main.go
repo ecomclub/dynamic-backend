@@ -102,7 +102,7 @@ func main() {
         if _, err := os.Stat(file); os.IsNotExist(err) {
           // dist file does not exists
           // try on channel's root directory
-          file = dir + "/_" + resource + ".html
+          file = dir + "/_" + resource + ".html"
         }
 
         http.ServeFile(w, r, file)
