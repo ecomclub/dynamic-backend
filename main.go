@@ -94,6 +94,9 @@ func main() {
         }
         http.SetCookie(w, &http.Cookie{Name: "Ecom." + r.URL.Path + ":resource", Value: resource, MaxAge: 30})
         http.SetCookie(w, &http.Cookie{Name: "Ecom." + r.URL.Path + ":_id", Value: id, MaxAge: 30})
+        // debug
+        log.Println("&Resource ID")
+        log.Println(id)
 
         // files from channel directory
         dir := root + channelId
