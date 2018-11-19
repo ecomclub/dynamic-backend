@@ -62,7 +62,7 @@ func main() {
     // get store ID from Redis
     val, err := client.Get(r.Host).Result()
     if err == nil {
-      fmt.Fprintf(w, "Key value: %q\n", val)
+      log.Println(val)
       // {storeId}@{storeObjectId}@{channelId}[@{defaultLang}]
       s := strings.Split(val, "@")
       storeId := s[0]
